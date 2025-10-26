@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eTourist.Data;
 
@@ -11,9 +12,11 @@ using eTourist.Data;
 namespace eTourist.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251025094155_Order_And_OrderItem_Added")]
+    partial class Order_And_OrderItem_Added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,6 +132,9 @@ namespace eTourist.Migrations
                     b.Property<int>("ArrangementId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -137,36 +143,9 @@ namespace eTourist.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArrangementId");
-
-                    b.HasIndex("OrderId");
+                    b.HasIndex("DestinationId");
 
                     b.ToTable("OrderItems");
-                });
-
-            modelBuilder.Entity("eTourist.Models.ShoppingCartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArrangementId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShoppingCartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArrangementId");
-
-                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("eTourist.Models.TourGuide", b =>
@@ -258,30 +237,19 @@ namespace eTourist.Migrations
                 {
                     b.HasOne("eTourist.Models.Arrangement", "Arrangement")
                         .WithMany()
-                        .HasForeignKey("ArrangementId")
+                        .HasForeignKey("DestinationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eTourist.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
+                        .WithMany("orderItems")
+                        .HasForeignKey("DestinationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Arrangement");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("eTourist.Models.ShoppingCartItem", b =>
-                {
-                    b.HasOne("eTourist.Models.Arrangement", "Arrangement")
-                        .WithMany()
-                        .HasForeignKey("ArrangementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Arrangement");
                 });
 
             modelBuilder.Entity("eTourist.Models.TourGuide_Arrangement", b =>
@@ -315,7 +283,7 @@ namespace eTourist.Migrations
 
             modelBuilder.Entity("eTourist.Models.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("orderItems");
                 });
 
             modelBuilder.Entity("eTourist.Models.TourGuide", b =>

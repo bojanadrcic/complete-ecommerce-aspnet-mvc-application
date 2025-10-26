@@ -1,0 +1,103 @@
+﻿@model NewArrangementVM
+@using eTourist.Data.Enums;
+
+@{
+    ViewData["Title"] = "Create a new arrangement";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4> Create a new arrangement </h4>
+        </p>
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="control-label"></label>
+                                <input asp-for="StartDate" type="date" class="form-control" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="control-label"></label>
+                                <input asp-for="EndDate" type="date" class="form-control" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label"></label>
+                                <input asp-for="Price" type="number" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageURL" class="control-label"></label>
+                                <input asp-for="ImageURL" class="form-control" />
+                                <span asp-validation-for="ImageURL" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DestinationId" class="control-label"></label>
+                                <select asp-for="DestinationId" class="form-control" asp-items="ViewBag.Destinations"></select>
+                                <span asp-validation-for="DestinationId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ArrangementCategory" class="control-label"></label>
+                                <select asp-for="ArrangementCategory" class="form-control" asp-items="Html.GetEnumSelectList<ArrangementCategory>()"></select>
+                                <span asp-validation-for="ArrangementCategory" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="TravelAgencyId" class="control-label"></label>
+                                <select asp-for="TravelAgencyId" class="form-control" asp-items="ViewBag.TravelAgencies"></select>
+                                <span asp-validation-for="TravelAgencyId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="TourGuideIds" class="control-label"></label>
+                                <select asp-for="TourGuideIds" class="form-control" asp-items="ViewBag.TourGuides" multiple></select>
+                                <span asp-validation-for="TourGuideIds" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" class="form-control" /></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 offset-4 text-center">
+                        <img width="100%" id="ImageUrlPreview" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $("#ImageURL").on("change", function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src= $ (this).val();
+        })
+    </script>
+}

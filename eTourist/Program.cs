@@ -1,4 +1,5 @@
 using eTourist.Data;
+using eTourist.Data.Cart;
 using eTourist.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,12 @@ builder.Services.AddScoped<ITourGuidesService, TourGuidesService>();
 builder.Services.AddScoped<ITravelAgenciesService, TravelAgenciesService>();
 builder.Services.AddScoped<IDestinationsService, DestinationsService>();
 builder.Services.AddScoped<IArrangementsService, ArrangementsService>();
+builder.Services.AddScoped<IOrdersService, OrdersService>();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -35,6 +42,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

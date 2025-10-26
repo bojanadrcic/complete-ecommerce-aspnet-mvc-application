@@ -1,7 +1,7 @@
 ﻿@model Arrangement
 
 @{
-    ViewData["Title"] = "ArrangementDetails";
+    ViewData["Title"] = "Arrangement details";
 }
 
 <div class="row">
@@ -76,12 +76,15 @@
                                 <a class="btn btn-outline-primary float-right" asp-action="Index">
                                     Back to List
                                 </a>
-                                <a class="btn btn-success text-white @((DateTime.Now > Model.EndDate) ? "disabled" : "")"
+                            <a class="btn btn-success-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">
+                                <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
+                            </a>
+                                @* <a class="btn btn-success text-white @((DateTime.Now > Model.EndDate) ? "disabled" : "")"
                                    asp-controller="Orders"
                                    asp-action="AddModelToShoppingCart"
                                    asp-route-id="@Model.Id">
                                     <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
-                                </a>
+                                </a> *@
                             </p>
                         </div>
                     </div>

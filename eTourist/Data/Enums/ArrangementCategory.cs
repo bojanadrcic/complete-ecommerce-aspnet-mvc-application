@@ -1,10 +1,9 @@
-﻿namespace eTourist.Data.Enums
+﻿namespace eTourist.Data.Enums;
+
+public enum ArrangementCategory
 {
-    public enum ArrangementCategory
-    {
-        SummerTrips = 1,
-        WinterTrips,
-        CityBreaks,
-        AdventureTours,
-    }
+    SummerTrips = 1,
+    WinterTrips,
+    CityBreaks,
+    AdventureTours,
 }
