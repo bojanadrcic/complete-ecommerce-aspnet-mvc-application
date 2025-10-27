@@ -1,18 +1,23 @@
 ﻿using eTourist.Data;
 using eTourist.Data.Services;
 using eTourist.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace eTourist.Controllers
 {
+    [Authorize]
     public class DestinationsController : Controller
     {
+        
         private readonly IDestinationsService _service;
         public DestinationsController(IDestinationsService service)
         {
             _service = service;
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allDestinations = await _service.GetAllAsync();
@@ -34,6 +39,7 @@ namespace eTourist.Controllers
         }
 
         //Get: TourGuides/Details/1
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var destinationDetails = await _service.GetByIdAsync(id);

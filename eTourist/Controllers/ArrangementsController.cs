@@ -1,6 +1,7 @@
 ﻿using eTourist.Data;
 using eTourist.Data.Services;
 using eTourist.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.Identity.Client;
 
 namespace eTourist.Controllers
 {
+    [Authorize]
     public class ArrangementsController : Controller
     {
         private readonly IArrangementsService _service;
@@ -15,6 +17,8 @@ namespace eTourist.Controllers
         {
             _service = service;
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allArrangements = await _service.GetAllAsync(n => n.Destination);
@@ -22,7 +26,7 @@ namespace eTourist.Controllers
             return View(allArrangements);
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allArrangements = await _service.GetAllAsync(n => n.Destination);
@@ -36,6 +40,7 @@ namespace eTourist.Controllers
             return View("Index", allArrangements);
         }
 
+        [AllowAnonymous]
         //GET: Arrangements/Detail/1
         public async Task<IActionResult> Details(int id)
         {
