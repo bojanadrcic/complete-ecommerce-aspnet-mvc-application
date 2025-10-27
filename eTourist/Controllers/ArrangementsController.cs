@@ -29,15 +29,24 @@ namespace eTourist.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
-            var allArrangements = await _service.GetAllAsync(n => n.Destination);
+            var svaPica = await _service.GetAllAsync(p => p.Destination);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                var filteredResult = allArrangements.Where (n => n.Name.Contains(searchString) || n.Description.Contains(searchString)).ToList();
+                // normalizuj pretragu (radi bez obzira na velika/mala slova)
+                searchString = searchString.ToLower();
+
+                var filteredResult = svaPica.Where(n =>
+                    n.Name.ToLower().Contains(searchString) ||
+                    n.Description.ToLower().Contains(searchString) ||
+                    n.Destination?.Name.ToLower().Contains(searchString) == true ||
+                    n.ArrangementCategory.ToString().ToLower().Contains(searchString)
+                ).ToList();
+
                 return View("Index", filteredResult);
             }
 
-            return View("Index", allArrangements);
+            return View("Index", svaPica);
         }
 
         [AllowAnonymous]

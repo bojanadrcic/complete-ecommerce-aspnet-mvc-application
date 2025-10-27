@@ -2,7 +2,24 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="welcome-wrapper d-flex justify-content-center align-items-center">
+    <div class="text-center p-5 bg-white bg-opacity-75 rounded-4 shadow-lg welcome-content">
+        <h1 class="display-4 fw-bold text-primary">Welcome to eTourist 🌍</h1>
+
+        <p class="lead mt-3">
+            eTourist — your trusted place for discovering and purchasing the best travel arrangements worldwide!
+        </p>
+
+        <hr class="my-4" />
+
+        <p class="mb-4">
+            Browse beautiful destinations, choose your ideal arrangement, book trips online & create unforgettable memories!
+        </p>
+
+        <a class="btn btn-info btn-lg text-white explore-btn" asp-controller="Arrangements" asp-action="Index">
+            Explore Arrangements ✈️
+        </a>
+    </div>
 </div>
+

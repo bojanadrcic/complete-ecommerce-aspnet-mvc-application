@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -39,3 +39,43 @@ body {
 .arr-card-footer {
     margin-top: auto;
 }
+
+.details-img {
+    max-height: 280px;
+    object-fit: cover;
+}
+
+.details-guide-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.lead {
+    font-size: 1.05rem;
+    line-height: 1.4;
+}
+
+.welcome-wrapper {
+    background-image: url('/images/worldmap.jpg'); /* Putanja do slike */
+    background-size: cover;
+    background-position: center;
+    min-height: calc(100vh - 120px); /* Da ne prelazi preko footera i navigacije */
+}
+
+/* Providna bela kutija za bolju čitljivost */
+.welcome-content {
+    max-width: 700px;
+}
+
+/* Hover efekat na dugme */
+.explore-btn {
+    transition: all 0.3s ease-in-out;
+}
+
+    .explore-btn:hover {
+        transform: scale(1.07);
+        background-color: #0dcaf0;
+        box-shadow: 0 0 12px rgba(13, 202, 240, 0.6);
+    }
+

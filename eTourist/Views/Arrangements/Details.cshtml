@@ -4,94 +4,101 @@
     ViewData["Title"] = "Arrangement details";
 }
 
-<div class="row">
-        <div class="col-md-8 offset-2">
-            <div class="card mb-12">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-header text-white bg-info">
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @Model.Name
-                                </h5>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <img src="@Model.ImageURL" width="100%" alt="@Model.Name">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <p class="card-text">@Model.Description</p>
-                            <p class="card-text"><b>Destination: </b>
-                                <a asp-controller="Destinations" asp-action="Details" asp-route-id="@Model.DestinationId">
-                                    @Model.Destination.Name
-                                </a>
-                            </p>
-                        <p class="card-text">
-                            <b>TravelAgency: </b>
-                            <a asp-controller="TravelAgencies" asp-action="Details" asp-route-id="@Model.TravelAgencyId">
-                                @Model.TravelAgency.FullName
-                            </a>
-                        </p>
-                            <p class="card-text"><b>Category: </b>@Model.ArrangementCategory</p>
-                            <p class="card-text"><b>Start Date: </b>@Model.StartDate.ToString("dd MMM yy")</p>
-                            <p class="card-text"><b>End Date: </b>@Model.EndDate.ToString("dd MMM yy")</p>
-                            <p class="card-text ">
-                                <b>Status: </b>
-                                @if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)
-                                {
-                                    <span class="badge bg-success text-white">AVAILABLE</span>
-                                }
-                                else if (DateTime.Now > Model.EndDate)
-                                {
-                                    <span class="badge bg-danger text-white">EXPIRED</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-primary text-white">UPCOMING</span>
-                                }
-                            </p>
 
-                            <p class="card-text">
-                                <b>TourGuides: </b>
-                                <hr />
-                                <div class="row">
-                                @foreach (var tourguide in Model.TourGuides_Arrangements)
-                                {
-                                    <div class="flex-column text-center">
-                                        <img class="border-info rounded-circle"src="@tourguide.TourGuide.ProfilePictureURL" style="max-width: 150px"/>
-                                        <br />
-                                        <a asp-controller="TourGuides" asp-action="Details" asp-route-id="@tourguide.TourGuideId">@tourguide.TourGuide.FullName</a>
-                                    </div>
-                                }
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="card shadow-sm mb-4 p-3">
+            <div class="card-header text-white bg-info">
+                <h4 class="card-title mb-0">@Model.Name</h4>
+            </div>
+
+            <!-- GLAVNA STRUKTURA U DVE KOLONE -->
+            <div class="row g-4 p-4">
+
+                <!-- LEVA KOLONA: SLIKA + OPIS -->
+                <div class="col-lg-7">
+                    <img src="@Model.ImageURL"
+                         alt="@Model.Name"
+                         class="img-fluid rounded shadow-sm mb-4 details-img" />
+
+                    <p class="lead">@Model.Description</p>
+
+                    <p><b>Destination:</b>
+                        <a asp-controller="Destinations" asp-action="Details" asp-route-id="@Model.DestinationId">
+                            @Model.Destination.Name
+                        </a>
+                    </p>
+
+                    <p><b>Travel Agency:</b>
+                        <a asp-controller="TravelAgencies" asp-action="Details" asp-route-id="@Model.TravelAgencyId">
+                            @Model.TravelAgency.FullName
+                        </a>
+                    </p>
+
+                    <p><b>Category:</b> @Model.ArrangementCategory</p>
+                    <p><b>Start Date:</b> @Model.StartDate.ToString("dd MMM yy")</p>
+                    <p><b>End Date:</b> @Model.EndDate.ToString("dd MMM yy")</p>
+
+                    <p>
+                        <b>Status:</b>
+                        @if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)
+                        {
+                            <span class="badge bg-success text-white">AVAILABLE</span>
+                        }
+                        else if (DateTime.Now > Model.EndDate)
+                        {
+                            <span class="badge bg-danger text-white">EXPIRED</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary text-white">UPCOMING</span>
+                        }
+                    </p>
+
+                    <h4 class="text-primary mt-3"><b>@Model.Price.ToString("c")</b></h4>
+                </div>
+
+                <!-- DESNA KOLONA: TOUR GUIDES -->
+                <div class="col-lg-5">
+                    <h5 class="mb-3">Tour Guides:</h5>
+
+                    <div class="d-flex gap-4 flex-wrap">
+                        @foreach (var tg in Model.TourGuides_Arrangements)
+                        {
+                            <div class="text-center">
+                                <img src="@tg.TourGuide.ProfilePictureURL"
+                                     class="rounded-circle details-guide-img shadow-sm border border-info"
+                                     alt="@tg.TourGuide.FullName" />
+                                <p class="mt-2">
+                                    <a asp-controller="TourGuides"
+                                       asp-action="Details"
+                                       asp-route-id="@tg.TourGuideId">
+                                        @tg.TourGuide.FullName
+                                    </a>
+                                </p>
                             </div>
-                            </p>
-
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card-footer ">
-                            <p class="card-text">
-                                <a class="btn btn-outline-primary float-right" asp-action="Index">
-                                    Back to List
-                                </a>
-                            <a class="btn btn-success-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">
-                                <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
-                            </a>
-                                @* <a class="btn btn-success text-white @((DateTime.Now > Model.EndDate) ? "disabled" : "")"
-                                   asp-controller="Orders"
-                                   asp-action="AddModelToShoppingCart"
-                                   asp-route-id="@Model.Id">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
-                                </a> *@
-                            </p>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="card-footer text-end">
+                <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
+
+                <a class="btn btn-success text-white @((DateTime.Now > Model.EndDate) ? "disabled" : "")"
+                   asp-controller="Orders"
+                   asp-action="AddItemToShoppingCart"
+                   asp-route-id="@Model.Id">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </a>
+            </div>
+
+        </>
+    </div>
 </div>
+
+
+
 @* @await Html.PartialAsync("_CreateModel", "Arrangements") *@
 
 
