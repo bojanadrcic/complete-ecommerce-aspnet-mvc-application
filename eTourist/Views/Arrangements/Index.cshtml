@@ -4,59 +4,66 @@
     ViewData["Title"] = "List of Arrangements";
 }
 
-<div class="row">
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
     {
-        <div class="col-md-4 col-xs-6 border-primary mb-3">
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-header text-white bg-info">
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.Name
-                                    <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                </h5>
-                            </p>
+        <div class="col d-flex">
+            <div class="card arr-card flex-fill">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">@item.Name</h5>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="d-flex align-items-center">
+                            <a class="text-white me-3" asp-action="Edit" asp-route-id="@item.Id" title="Edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a class="text-white" asp-action="Delete" asp-route-id="@item.Id" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <img src="@item.ImageURL" width="100%" alt="@item.Name">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <p class="card-text">@item.Description</p>
-                            <p class="card-text"><b>Cinema: </b>@item.Destination.Name</p>
-                            <p class="card-text"><b>Category: </b>@item.ArrangementCategory</p>
-                            <p class="card-text"><b>Start Date: </b>@item.StartDate.ToString("dd MMM yy")</p>
-                            <p class="card-text"><b>End Date: </b>@item.EndDate.ToString("dd MMM yy")</p>
-                            <p class="card-text ">
-                                <b>Status: </b>
-                                @if (DateTime.Now >= item.StartDate && DateTime.Now <= item.EndDate)
-                                {
-                                    <span class="badge bg-success text-white">AVAILABLE</span>
-                                }
-                                else if (DateTime.Now > item.EndDate)
-                                {
-                                    <span class="badge bg-danger text-white">EXPIRED</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-primary text-white">UPCOMING</span>
-                                }
-                            </p>
+                    }
+                </div>
 
+                <img class="arr-card-img" src="@item.ImageURL" alt="@item.Name" />
+
+                <div class="card-body arr-card-body">
+                    <p class="mb-2 text-muted">@item.Description</p>
+
+                    <div class="small">
+                        <div><b>Destination:</b> @item.Destination.Name</div>
+                        <div><b>Category:</b> @item.ArrangementCategory</div>
+                        <div><b>Start Date:</b> @item.StartDate.ToString("dd MMM yy")</div>
+                        <div><b>End Date:</b> @item.EndDate.ToString("dd MMM yy")</div>
+                        <div class="mt-2">
+                            <b>Status: </b>
+                            @if (DateTime.Now >= item.StartDate && DateTime.Now <= item.EndDate)
+                            {
+                                <span class="badge bg-success">AVAILABLE</span>
+                            }
+                            else if (DateTime.Now > item.EndDate)
+                            {
+
+                                <span class="badge bg-danger">EXPIRED</span>
+                            }
+                            else
+                            {
+
+                                <span class="badge bg-primary">UPCOMING</span>
+                            }
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="card-footer ">
-                            <p class="card-text">
-                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
-                                </a>
-                                <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))</a>
-                            </p>
-                        </div>
+                </div>
+
+                <div class="card-footer arr-card-footer">
+                    <div class="d-flex justify-content-between align-items-center flex-nowrap gap-2">
+                        <a class="btn btn-outline-primary text-nowrap" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="bi bi-eye-fill"></i> Show Details
+                        </a>
+                        <a class="btn btn-success text-white text-nowrap"
+                           asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                            <small class="opacity-75"> (@item.Price.ToString("c"))</small>
+                        </a>
                     </div>
                 </div>
             </div>

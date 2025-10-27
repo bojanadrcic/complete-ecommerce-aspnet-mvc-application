@@ -18,16 +18,42 @@ namespace eTourist.Data.Cart
             _context = context;
         }
 
-        public static ShoppingCart GetShoppingCart (IServiceProvider services)
+
+        //GET METODA ZA PAMCENJE SESSION
+        //public static ShoppingCart GetShoppingCart (IServiceProvider services)
+        //{
+        //    ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
+        //    var context = services.GetService<AppDbContext>();
+
+        //    string cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
+        //    session.SetString("CartId", cartId);
+
+        //    return new ShoppingCart(context) { ShoppingCartId = cartId };
+        //}
+
+
+        //GET METODA ZA PAMCENJE USERA
+        public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
             var context = services.GetService<AppDbContext>();
+            var httpContext = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext;
 
-            string cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
-            session.SetString("CartId", cartId);
+            string cartId;
+
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                cartId = httpContext.User.Identity.Name; // unique per logged user
+            }
+            else
+            {
+                cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
+                session.SetString("CartId", cartId);
+            }
 
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
+
 
         public void AddItemToCart(Arrangement arrangement)
         {
@@ -87,5 +113,6 @@ namespace eTourist.Data.Cart
             _context.ShoppingCartItems.RemoveRange(items);
             await _context.SaveChangesAsync();
         }
+
     }
 }

@@ -130,5 +130,28 @@ namespace eTourist.Controllers
             await _service.UpdateArrangementAsync(arrangement);
             return RedirectToAction(nameof(Index));
         }
+
+        //GET: Arrangements/Delete/1
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var arrangementDetails = await _service.GetArrangementByIdAsync(id);
+            if (arrangementDetails == null) return View("NotFound");
+
+            return View(arrangementDetails);
+        }
+
+        //POST: Arrangements/Delete/1
+        [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var arrangementDetails = await _service.GetArrangementByIdAsync(id);
+            if (arrangementDetails == null) return View("NotFound");
+
+            await _service.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
