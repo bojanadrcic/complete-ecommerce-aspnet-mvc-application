@@ -39,9 +39,9 @@ namespace eTourist.Controllers
         //GET: Arrangements/Detail/1
         public async Task<IActionResult> Details(int id)
         {
-            var arrangementDetail = await _service.GetArrangementByIdAsync(id);
+            var arrangementDetails = await _service.GetArrangementByIdAsync(id);
 
-            return View(arrangementDetail);
+            return View(arrangementDetails);
         }
 
         //GET: Arrangements/Create
